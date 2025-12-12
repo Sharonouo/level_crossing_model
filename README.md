@@ -7,8 +7,8 @@
 - 閘門上升完畢後，回到state 0(idle)。
 - 七段顯示器顯示紅綠燈的倒數時間
 ## 1. Train Detection 火車偵測 (Ultrasonic × 2)
-- Ultrasonic1：偵測火車「接近」平交道
-- Ultrasonic2：偵測火車「離開 / 已通過」
+- Ultrasonic1&2：偵測火車是否在平交道警示範圍內
+- boolean is_idle 若為1，代表目前無火車通過；火車一通過其中一個Ultrasonic後，is_idle由1轉0，並開始進入state 1&2的流程；當火車通過另一個Ultrasonic後，進入state 3，且is_idle變回1。
 - 用 Timer1 計 echo 寬度 → 換算成距離 (distance cm)
 ## 2. Gate Control 閘門控制 (4 motors)
 - 假設每個閘門只有「升起 / 降下」，不需要精細角度：
