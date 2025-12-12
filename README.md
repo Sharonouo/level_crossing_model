@@ -37,8 +37,8 @@
 |-----------|------|----------------|
 | US1_TRIG  | RB0  | 輸出 trigger   |
 | US1_ECHO  | RB1  | 輸入 echo      |
-| US2_TRIG  | RB2  | 輸出 trigger   |
-| US2_ECHO  | RB3  | 輸入 echo      |
+| US2_TRIG  | RA4  | 輸出 trigger   |
+| US2_ECHO  | RA5  | 輸入 echo      |
 | Timer1    | TMR1 | 量 echo 時間   |
 
 馬達
@@ -52,19 +52,18 @@
 紅黃綠LED
 | LED    | 腳位 |
 |--------|------|
-| RED    | RD0  |
-| YELLOW | RD1  |
-| GREEN  | RD2  |
+| RED    | RA0  |
+| YELLOW | RA1  |
+| GREEN  | RA2  |
 
 七段顯示器
 | 功能              | 腳位             |
 |-------------------|------------------|
 | a b c d e f g     | RE0 ~ RE6        |
-| DIGIT1 (十位)     | RA0              |
-| DIGIT2 (個位)     | RA1              |
+
 
 蜂鳴器
 | 功能 | 腳位 |
 |------|------|
-| BUZZ | RD7  |
+| BUZZ | RA3  |
 
