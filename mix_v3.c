@@ -37,7 +37,7 @@ void move_steps_with_bounce(void) {
         if (duty_now <= 16) dir = 1;
         duty_now += (dir > 0 ? 1 : -1);
         pwm_set_val(duty_now);
-        __delay_ms(200);
+        __delay_ms(100);
     }
 }
 
@@ -74,20 +74,26 @@ void ultrasonic1_trigger(void) {
 unsigned int ultrasonic1_get_us(char *valid) {
     unsigned int t = 0, timeout = 0;
     *valid = 0;
-
     // Wait for ECHO to go HIGH
-    while (!PORTBbits.RB1 && timeout < 120000) timeout++;
-    if (timeout >= 120000) return 0;
+    while (!PORTBbits.RB1 && timeout < 30000) {
+        timeout++;
+       LATAbits.LATA4 = 1;
+    }
+    if (timeout >= 30000) {
+        LATAbits.LATA4 =0;
+        return 60000;
+    }
+
 
     // Measure HIGH pulse width using Timer1
     TMR1H = 0;
     TMR1L = 0;
     T1CONbits.TMR1ON = 1;
-
-    while (PORTBbits.RB1 && t < 60000) {
+    
+    while (PORTBbits.RB1 && t < 10000) {
         t = (TMR1H << 8) | TMR1L;
     }
-
+    
     T1CONbits.TMR1ON = 0;
     *valid = 1;
     return t;
@@ -96,7 +102,7 @@ unsigned int ultrasonic1_get_us(char *valid) {
 float ultrasonic1_distance_cm(char *valid) {
     ultrasonic1_trigger();
     unsigned int us = ultrasonic1_get_us(valid);
-    if (!(*valid)) return 999;
+    if (*valid == 0) return 999;
     *valid = 0;
     return (float)us * 0.549;
 }
@@ -115,14 +121,20 @@ unsigned int ultrasonic2_get_us(char *valid) {
     *valid = 0;
 
     // Wait for ECHO to go HIGH
-    while (!PORTBbits.RB3 && timeout < 120000) timeout++;
-    if (timeout >= 120000) return 0;
+    while (!PORTBbits.RB3 && timeout < 30000) {
+        timeout++;
+        LATAbits.LATA4 = 1;
+    }
+    if (timeout >= 30000) {
+       LATAbits.LATA4 = 0;
+        return 60000;
+    }
 
     TMR1H = 0;
     TMR1L = 0;
     T1CONbits.TMR1ON = 1;
 
-    while (PORTBbits.RB3 && t < 60000) {
+    while (PORTBbits.RB3 && t < 10000) {
         t = (TMR1H << 8) | TMR1L;
     }
 
@@ -134,6 +146,7 @@ unsigned int ultrasonic2_get_us(char *valid) {
 float ultrasonic2_distance_cm(char *valid) {
     ultrasonic2_trigger();
     unsigned int us = ultrasonic2_get_us(valid);
+    
     if (!(*valid)) return 999;
     *valid = 0;
     return (float)us * 0.549;
@@ -144,6 +157,7 @@ float ultrasonic2_distance_cm(char *valid) {
 ========================= */
 void traffic_cycle(void) {
     LATAbits.LATA3 = 0; 
+    last_trigger = 0;
     if(count >= 14){
         LATAbits.LATA2 = 1;
         LATAbits.LATA1 = 0;
@@ -240,9 +254,10 @@ void main(void) {
 
     // Timer1
     T1CON = 0b00000001;
+    //T0CON = 0b00000001;
     
-    float d1 = 99;
-    float d2 = 99;
+    float d1 = 999;
+    float d2 = 999;
     char v1 = 0;
     char v2 = 0;
     while (1) {
