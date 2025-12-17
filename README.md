@@ -91,17 +91,15 @@
 |-----------|------|----------------|
 | US1_TRIG  | RB0  | 輸出 trigger   |
 | US1_ECHO  | RB1  | 輸入 echo      |
-| US2_TRIG  | RA4  | 輸出 trigger   |
-| US2_ECHO  | RA5  | 輸入 echo      |
+| US2_TRIG  | RB2  | 輸出 trigger   |
+| US2_ECHO  | RB3  | 輸入 echo      |
 | Timer1    | TMR1 | 量 echo 時間   |
 
 馬達
 | 功能        | 腳位 |
 |-------------|------|
-| GATE_L_IN1  | RC0  |      
-| GATE_L_IN2  | RC1  |      
-| GATE_R_IN1  | RC2  |     
-| GATE_R_IN2  | RC3  |  
+| GATE_1  | CCP2 |      
+| GATE_2  | CCP2  |        
 
 紅黃綠LED
 | LED    | 腳位 |
@@ -113,7 +111,7 @@
 七段顯示器
 | 功能              | 腳位             |
 |-------------------|------------------|
-| a b c d e f g     | RE0 ~ RE6        |
+| a b c d e f g     | RD0 ~ RD6        |
 
 
 蜂鳴器
